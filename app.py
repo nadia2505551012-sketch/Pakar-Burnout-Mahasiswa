@@ -159,7 +159,7 @@ with col_kanan:
             st.write("Sistem melakukan verifikasi terbalik dari Hipotesis Goal ke Gejala pendukung yang diinputkan pengguna.")
 
         with tab_cf:
-            st.markdown("#### Simulasi Rumus CF (Sesuai Gambar Slide)")
+            st.markdown("#### Simulasi Rumus CF")
             st.write("1. **Kombinasi Premis AND:** $CF(bukti) = \min(CF_1, CF_2)$")
             st.write("2. **Kalikan Bobot Rule:** $CF(kesimpulan) = CF(bukti) \times CF(aturan)$")
             st.write("3. **Kombinasi Dua Bukti:** $CF_{gabungan} = CF_1 + CF_2(1 - CF_1)$")
