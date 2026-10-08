@@ -11,7 +11,7 @@ DIK_CF_USER = {
 }
 
 def cf_and(*values):
-    """Mencari nilai minimum untuk kondisi AND (Sesuai rumus gambar)"""
+    """Mencari nilai minimum untuk kondisi AND"""
     return min(values)
 
 def proses_forward_chaining_cf(g1, g2, g3, g4, g5, g6, g7, g8):
