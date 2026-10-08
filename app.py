@@ -159,25 +159,25 @@ with col_kanan:
             st.write("Sistem melakukan verifikasi terbalik dari Hipotesis Goal ke Gejala pendukung yang diinputkan pengguna.")
 
         with tab_cf:
-            st.markdown("#### Simulasi Rumus CF (Sesuai Gambar Slide)")[cite: 3]
-            st.write("1. **Kombinasi Premis AND:** $CF(bukti) = \min(CF_1, CF_2)$")[cite: 3]
-            st.write("2. **Kalikan Bobot Rule:** $CF(kesimpulan) = CF(bukti) \times CF(aturan)$")[cite: 3]
-            st.write("3. **Kombinasi Dua Bukti:** $CF_{gabungan} = CF_1 + CF_2(1 - CF_1)$")[cite: 3]
+            st.markdown("#### Simulasi Rumus CF (Sesuai Gambar Slide)")
+            st.write("1. **Kombinasi Premis AND:** $CF(bukti) = \min(CF_1, CF_2)$")
+            st.write("2. **Kalikan Bobot Rule:** $CF(kesimpulan) = CF(bukti) \times CF(aturan)$")
+            st.write("3. **Kombinasi Dua Bukti:** $CF_{gabungan} = CF_1 + CF_2(1 - CF_1)$")
             
             st.divider()
             col_cf1, col_cf2 = st.columns(2)
             with col_cf1:
-                e1 = st.slider("CF Bukti 1", 0.0, 1.0, 0.90, 0.05)[cite: 3]
-                e2 = st.slider("CF Bukti 2", 0.0, 1.0, 0.80, 0.05)[cite: 3]
+                e1 = st.slider("CF Bukti 1", 0.0, 1.0, 0.90, 0.05)
+                e2 = st.slider("CF Bukti 2", 0.0, 1.0, 0.80, 0.05)
             with col_cf2:
-                rule_w = st.slider("CF Aturan (Pakar)", 0.0, 1.0, 0.85, 0.05)[cite: 3]
+                rule_w = st.slider("CF Aturan (Pakar)", 0.0, 1.0, 0.85, 0.05)
                 
-            res_min = min(e1, e2)[cite: 3]
-            res_cf = res_min * rule_w[cite: 3]
+            res_min = min(e1, e2)
+            res_cf = res_min * rule_w
             
             st.markdown(f"""
-            * **Langkah 1:** $\min({e1:.2f}, {e2:.2f}) = {res_min:.2f}$[cite: 3]
-            * **Langkah 2:** ${res_min:.2f} \\times {rule_w:.2f} = \\mathbf{{{res_cf:.4f}}}$ (**{res_cf*100:.1f}%**)[cite: 3]
+            * **Langkah 1:** $\min({e1:.2f}, {e2:.2f}) = {res_min:.2f}$
+            * **Langkah 2:** ${res_min:.2f} \\times {rule_w:.2f} = \\mathbf{{{res_cf:.4f}}}$ (**{res_cf*100:.1f}%**)
             """)
 
         with tab_limit:
