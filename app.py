@@ -5,14 +5,19 @@
 import streamlit as st
 from engine import proses_forward_chaining_cf, DIK_CF_USER
 
-# 1. Konfigurasi Halaman
+# --- 1. KONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="BurnoutCheck - Sistem Pakar",
     page_icon="🧠",
     layout="wide"
 )
 
-# 2. Custom CSS Warna & Card Sesuai Gambar Dashboard
+# --- 2. INISIALISASI SESSION STATE ---
+# Agar status diagnosa tersimpan dan slider tidak mereset halaman
+if 'sudah_diagnosa' not in st.session_state:
+    st.session_state.sudah_diagnosa = False
+
+# --- 3. CUSTOM CSS ---
 st.markdown("""
     <style>
     .stApp {
@@ -91,13 +96,16 @@ with col_kiri:
 
     btn_diagnosa = st.button("🔍 Diagnosa Sekarang", use_container_width=True, type="primary")
 
+    if btn_diagnosa:
+        st.session_state.sudah_diagnosa = True
+
 with col_kanan:
     st.markdown("### 📊 Hasil Diagnosa")
     
-    if btn_diagnosa:
+    if st.session_state.sudah_diagnosa:
         kategori, persentase, log, G_val = proses_forward_chaining_cf(g1, g2, g3, g4, g5, g6, g7, g8)
         
-        # Result Card Sesuai Gambar
+        # Result Card
         st.markdown(f"""
         <div class="result-card">
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -128,7 +136,7 @@ with col_kanan:
 
         st.markdown("---")
         
-        # TAB DETAIL: BACKWARD CHAINING, CALCULATOR CF & LIMITATIONS
+        # TAB DETAIL: LOG, BACKWARD CHAINING, CALCULATOR CF & LIMITATIONS
         tab_log, tab_backward, tab_cf, tab_limit = st.tabs(["📄 Log FC", "🌲 Backward Chaining", "🧮 Perhitungan CF", "⚠️ Keterbatasan"])
         
         with tab_log:
@@ -136,7 +144,6 @@ with col_kanan:
             
         with tab_backward:
             st.markdown(f"**Membuktikan Hipotesis Goal:** `{kategori}`")
-            # Pohon Grafis Sesuai Jawaban Aktif Pengguna
             dot_code = f"""
             digraph G {{
                 rankdir=BT;
@@ -159,24 +166,24 @@ with col_kanan:
             st.write("Sistem melakukan verifikasi terbalik dari Hipotesis Goal ke Gejala pendukung yang diinputkan pengguna.")
 
         with tab_cf:
-            st.markdown("#### Simulasi Rumus CF")
-            st.write("1. **Kombinasi Premis AND:** $CF(bukti) = \min(CF_1, CF_2)$")
-            st.write("2. **Kalikan Bobot Rule:** $CF(kesimpulan) = CF(bukti) \times CF(aturan)$")
+            st.markdown("#### Simulasi Rumus CF (Sesuai Gambar Slide)")
+            st.write("1. **Kombinasi Premis AND:** $CF(bukti) = \\min(CF_1, CF_2)$")
+            st.write("2. **Kalikan Bobot Rule:** $CF(kesimpulan) = CF(bukti) \\times CF(aturan)$")
             st.write("3. **Kombinasi Dua Bukti:** $CF_{gabungan} = CF_1 + CF_2(1 - CF_1)$")
             
             st.divider()
             col_cf1, col_cf2 = st.columns(2)
             with col_cf1:
-                e1 = st.slider("CF Bukti 1", 0.0, 1.0, 0.90, 0.05)
-                e2 = st.slider("CF Bukti 2", 0.0, 1.0, 0.80, 0.05)
+                e1 = st.slider("CF Bukti 1", 0.0, 1.0, 0.90, 0.05, key="slider_e1")
+                e2 = st.slider("CF Bukti 2", 0.0, 1.0, 0.80, 0.05, key="slider_e2")
             with col_cf2:
-                rule_w = st.slider("CF Aturan (Pakar)", 0.0, 1.0, 0.85, 0.05)
+                rule_w = st.slider("CF Aturan (Pakar)", 0.0, 1.0, 0.85, 0.05, key="slider_rule")
                 
             res_min = min(e1, e2)
             res_cf = res_min * rule_w
             
             st.markdown(f"""
-            * **Langkah 1:** $\min({e1:.2f}, {e2:.2f}) = {res_min:.2f}$
+            * **Langkah 1:** $\\min({e1:.2f}, {e2:.2f}) = {res_min:.2f}$
             * **Langkah 2:** ${res_min:.2f} \\times {rule_w:.2f} = \\mathbf{{{res_cf:.4f}}}$ (**{res_cf*100:.1f}%**)
             """)
 
